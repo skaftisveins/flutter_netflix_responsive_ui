@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_netflix_responsive_ui/cubits/cubits.dart';
+import 'package:flutter_netflix_responsive_ui/widgets/widgets.dart';
 
 import 'home_screen.dart';
 
@@ -28,33 +31,38 @@ class _NavScreenState extends State<NavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        items: _icons
-            .map(
-              (title, icon) => MapEntry(
-                title,
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    icon,
-                    size: 30,
-                  ),
-                  title: Text(title),
-                ),
-              ),
-            )
-            // To grab a list of bottom navigation bar items out of this map, we convert the values to a list
-            .values
-            .toList(),
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.white,
-        selectedFontSize: 11,
-        unselectedItemColor: Colors.grey,
-        unselectedFontSize: 11,
-        onTap: (index) => setState(() => _currentIndex = index),
+      body: BlocProvider<AppBarCubit>(
+        create: (_) => AppBarCubit(),
+        child: _screens[_currentIndex],
       ),
+      bottomNavigationBar: !Responsive.isDesktop(context)
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.black,
+              items: _icons
+                  .map(
+                    (title, icon) => MapEntry(
+                      title,
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          icon,
+                          size: 30,
+                        ),
+                        title: Text(title),
+                      ),
+                    ),
+                  )
+                  // To grab a list of bottom navigation bar items out of this map, we convert the values to a list
+                  .values
+                  .toList(),
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.white,
+              selectedFontSize: 11,
+              unselectedItemColor: Colors.grey,
+              unselectedFontSize: 11,
+              onTap: (index) => setState(() => _currentIndex = index),
+            )
+          : null,
     );
   }
 }
