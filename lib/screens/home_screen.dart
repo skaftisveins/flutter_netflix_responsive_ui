@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
-import '../data/data.dart';
 import '../widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key key}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -53,9 +53,38 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ContentHeader(featuredContent: sintelContent),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 20),
-            sliver: SliverToBoxAdapter(child: Previews(title: 'Previews', contentList: previews),)
-          )
+              padding: EdgeInsets.symmetric(vertical: 10),
+              sliver: SliverToBoxAdapter(
+                child: Previews(
+                    key: PageStorageKey('previews'),
+                    title: 'Previews',
+                    contentList: previews),
+              )),
+          SliverToBoxAdapter(
+            child: ContentList(
+              key: PageStorageKey('myList'),
+              title: 'My List',
+              contentList: myList,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: ContentList(
+              key: PageStorageKey('originals'),
+              title: 'Netflix Originals',
+              contentList: originals,
+              isOriginals: true,
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(bottom: 20),
+            sliver: SliverToBoxAdapter(
+              child: ContentList(
+                key: PageStorageKey('trending'),
+                title: 'Trending',
+                contentList: trending,
+              ),
+            ),
+          ),
         ],
       ),
     );
